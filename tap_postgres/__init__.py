@@ -245,7 +245,7 @@ SELECT
   pg_class.relname                                      AS table_name,
   attname                                               AS column_name,
   i.indisprimary                                        AS primary_key,
-  format_type(a.atttypid, NULL::integer)                AS data_type,
+  format_type(CASE WHEN pgt.typtype = 'd' THEN pgt.typbasetype ELSE a.atttypid END, NULL::integer) AS data_type,
   information_schema._pg_char_max_length(CASE WHEN COALESCE(subpgt.typtype, pgt.typtype) = 'd'
                                               THEN COALESCE(subpgt.typbasetype, pgt.typbasetype) ELSE COALESCE(subpgt.oid, pgt.oid)
                                           END,
